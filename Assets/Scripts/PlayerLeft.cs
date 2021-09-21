@@ -4,29 +4,21 @@ using UnityEngine;
 
 public class PlayerLeft : MonoBehaviour
 {
+    [SerializeField] private float movementspeed = 10f;
+
+    private Ball ball;
+    private Transform ballTransform;
     private Vector3 startposition = new Vector3(-8.5f, 0f, 0f);
-    private float maxpositionY = 4f;
-    private float movementspeed = 10f;
 
     private void Start()
     {
+        ball = FindObjectOfType<Ball>();
+        ballTransform = ball.GetComponent<Transform>();
         transform.position = startposition;
     }
 
     private void Update()
     {
-        Movement();
-    }
-
-    private void Movement()
-    {
-        if (Input.GetKey(KeyCode.W) && transform.position.y <= maxpositionY)
-        {
-            transform.position += Vector3.up * movementspeed * Time.deltaTime;
-        }
-        else if (Input.GetKey(KeyCode.S) && transform.position.y >= -maxpositionY)
-        {
-            transform.position += Vector3.down * movementspeed * Time.deltaTime;
-        }
+        transform.position = new Vector3(startposition.x, Mathf.Lerp(transform.position.y, ballTransform.transform.position.y, movementspeed), startposition.z);
     }
 }
